@@ -1,5 +1,7 @@
 package com.jsrunner.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -9,24 +11,26 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintStream;
 
 /**
  * This class contains the logic for handling JavaScript, correct processing and returning the result of the
  * script execution.
- * <p>
- * <b>Under development<b/>
  *
  * @version 0.1
  */
 @Service
-@PropertySource("classpath:application.properties")
 public class JavaScriptExecutorService {
 
-    private String engineName = "nashorn";
-    private ScriptEngine engine = new ScriptEngineManager().getEngineByName(engineName);
+    @Autowired
+    @Qualifier("jsexecutor")
+    JavaScriptExecutor executor;
 
-    public void execute(String script) throws FileNotFoundException, ScriptException {
-        engine.eval(script);
+    public String execute(String script) {
+        try {
+            return executor.execute(script);
+        } catch (ScriptException e) {
+            return e.getMessage();
+        }
     }
-    
 }
