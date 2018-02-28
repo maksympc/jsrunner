@@ -1,7 +1,5 @@
 package com.jsrunner;
 
-
-import com.jsrunner.services.JavaScriptExecutorService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;

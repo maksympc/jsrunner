@@ -1,7 +1,8 @@
 package com.jsrunner.controllers;
 
-
-import com.jsrunner.services.JavaScriptExecutorService;
+import com.jsrunner.model.JSExecutionResultHttpResponseDto;
+import com.jsrunner.services.JSExecutorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @version 0.2
  */
+@Slf4j
 @RestController
 @RequestMapping("/js")
-public class JavaScriptReceiverController {
+public class JSReceiverController {
 
     @Autowired
-    private JavaScriptExecutorService executorService;
+    private JSExecutorService executorService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> termsOfUse() {
@@ -31,7 +33,16 @@ public class JavaScriptReceiverController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> execute(@RequestBody String script) {
-        String result = executorService.execute(script);
-        return ResponseEntity.accepted().body(result);
+        log.info("Incoming request body:{}", script);
+        JSExecutionResultHttpResponseDto executionResult = executorService.execute(script);
+        ResponseEntity response = buildResponseEntity(executionResult);
+        log.info("Response:{}", response);
+        return response;
     }
+
+    private ResponseEntity buildResponseEntity(JSExecutionResultHttpResponseDto executionResult) {
+        ResponseEntity response = new ResponseEntity(executionResult.getExecutionResult(), executionResult.getHttpStatusCode());
+        return response;
+    }
+
 }

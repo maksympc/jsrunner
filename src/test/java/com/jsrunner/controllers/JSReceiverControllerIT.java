@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class JavaScriptReceiverControllerIT {
+public class JSReceiverControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -40,6 +40,7 @@ public class JavaScriptReceiverControllerIT {
     public void execute() throws URISyntaxException {
         //prepare
         String expected = "Hello world!\r\n";
+        String expectedStatusCode = "200";
         String requestScriptBody = "print(\"Hello world!\")";
         RequestEntity<String> requestEntity = RequestEntity.post(new URI("/js"))
                 .header("Content-Type", "application/javascript")
@@ -49,8 +50,7 @@ public class JavaScriptReceiverControllerIT {
         String body = response.getBody();
         String statusCode = response.getStatusCode().toString();
         //validate
-        assertThat(statusCode, is("202"));
+        assertThat(statusCode, is(expectedStatusCode));
         assertThat(body, is(expected));
-
     }
 }
