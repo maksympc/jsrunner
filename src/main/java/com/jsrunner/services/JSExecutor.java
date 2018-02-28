@@ -29,7 +29,9 @@ public class JSExecutor {
             engine.eval(script, context);
             return buildExecutionResultDto(context.getWriter(), context.getErrorWriter());
         } catch (ScriptException e) {
-            log.info("An exception has been occurred, while running the script\nScript:\n{}\nException:\n{}", script, e.getLocalizedMessage());
+            log.info("An exception has been occurred, while running the script\n" +
+                    "Script:{}" +
+                    "\nException:{}", script, e.getLocalizedMessage());
             return buildExecutionResultDto(context.getWriter(), context.getErrorWriter(), e);
         }
     }

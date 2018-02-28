@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.script.ScriptException;
+import java.util.concurrent.*;
 
 /**
  * This class contains the logic for handling JavaScript, correct processing and returning the result of the
@@ -18,25 +18,53 @@ import javax.script.ScriptException;
 @Service
 public class JSExecutorService {
 
+    private final int TIME_TO_INTERRUPT = 5;
+    private final TimeUnit TIME_SCALE = TimeUnit.SECONDS;
+    private final int THREAD_POOL_SIZE = 4;
+
+    private ScheduledExecutorService pool = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
+
     @Autowired
     JSExecutor executor;
 
     public JSExecutionResultHttpResponseDto execute(@NonNull String script) {
-        JSExecutionResultHttpResponseDto response = new JSExecutionResultHttpResponseDto();
-        JSExecutionResultDto executionResult = executor.execute(script);
-        return buildJSJsExecutionResultHttpResponseDto(executionResult);
+        Future<JSExecutionResultDto> scriptTask = pool.submit(
+                () -> executor.execute(script)
+        );
+
+        pool.schedule(
+                () -> scriptTask.cancel(true),
+                TIME_TO_INTERRUPT,
+                TIME_SCALE
+        );
+
+        return buildJsExecutionResultHttpResponseDto(scriptTask);
     }
 
-    private JSExecutionResultHttpResponseDto buildJSJsExecutionResultHttpResponseDto(JSExecutionResultDto dto) {
-        String sb = dto.getExecutionResult() +
-                dto.getErrors();
-        HttpStatus statusCode = HttpStatus.OK;
-        if (dto.getErrors().length() != 0) {
-            statusCode = HttpStatus.BAD_REQUEST;
+    // It is necessary to clarify the HttpStatus codes in InterruptedException and ExecutionException cases.
+    private JSExecutionResultHttpResponseDto buildJsExecutionResultHttpResponseDto(Future<JSExecutionResultDto> scriptTask) {
+        JSExecutionResultHttpResponseDto response = new JSExecutionResultHttpResponseDto();
+        JSExecutionResultDto executionResult = new JSExecutionResultDto();
+        HttpStatus statusCode;
+
+        try {
+            executionResult = scriptTask.get();
+            statusCode = executionResult.getErrors().length() == 0 ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        } catch (CancellationException e) {
+            response.setExecutionResult(e.toString());
+            statusCode = HttpStatus.GATEWAY_TIMEOUT;
+        } catch (ExecutionException | InterruptedException e) {
+            response.setExecutionResult(e.toString());
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
+        return buildJsExecutionResultHttpResponseDto(executionResult, statusCode);
+    }
+
+    private JSExecutionResultHttpResponseDto buildJsExecutionResultHttpResponseDto(JSExecutionResultDto dto, HttpStatus statusCode) {
         return JSExecutionResultHttpResponseDto
                 .builder()
-                .executionResult(sb)
+                .executionResult(dto.getExecutionResult() + dto.getErrors())
                 .httpStatusCode(statusCode)
                 .build();
     }
