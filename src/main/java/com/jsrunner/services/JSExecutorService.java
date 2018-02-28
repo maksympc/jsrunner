@@ -23,33 +23,20 @@ public class JSExecutorService {
 
     public JSExecutionResultHttpResponseDto execute(@NonNull String script) {
         JSExecutionResultHttpResponseDto response = new JSExecutionResultHttpResponseDto();
-        try {
-            JSExecutionResultDto executionResult = executor.execute(script);
-            return buildJSJsExecutionResultHttpResponseDto(executionResult);
-        } catch (ScriptException e) {
-            return buildJSJsExecutionResultHttpResponseDto(e);
-        }
-    }
-
-    private JSExecutionResultHttpResponseDto buildJSJsExecutionResultHttpResponseDto(Exception e) {
-        return JSExecutionResultHttpResponseDto
-                .builder()
-                .executionResult(e.getMessage())
-                .httpStatusCode(HttpStatus.BAD_REQUEST)
-                .build();
+        JSExecutionResultDto executionResult = executor.execute(script);
+        return buildJSJsExecutionResultHttpResponseDto(executionResult);
     }
 
     private JSExecutionResultHttpResponseDto buildJSJsExecutionResultHttpResponseDto(JSExecutionResultDto dto) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(dto.getExecutionResult());
-        sb.append(dto.getErrors());
+        String sb = dto.getExecutionResult() +
+                dto.getErrors();
         HttpStatus statusCode = HttpStatus.OK;
         if (dto.getErrors().length() != 0) {
             statusCode = HttpStatus.BAD_REQUEST;
         }
         return JSExecutionResultHttpResponseDto
                 .builder()
-                .executionResult(sb.toString())
+                .executionResult(sb)
                 .httpStatusCode(statusCode)
                 .build();
     }

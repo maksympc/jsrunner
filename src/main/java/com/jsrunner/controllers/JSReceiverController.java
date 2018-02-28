@@ -33,10 +33,10 @@ public class JSReceiverController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> execute(@RequestBody String script) {
-        log.info("Incoming request body:{}", script);
+        log.info("Incoming request body:\n{}", script);
         JSExecutionResultHttpResponseDto executionResult = executorService.execute(script);
         ResponseEntity response = buildResponseEntity(executionResult);
-        log.info("Response:{}", response);
+        log.info("Response:\n{}", response);
         return response;
     }
 
