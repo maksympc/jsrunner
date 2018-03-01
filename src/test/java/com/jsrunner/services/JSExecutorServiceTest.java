@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.script.ScriptException;
-import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -20,23 +23,28 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class JSExecutorServiceTest {
-
     @Mock
-    private JSExecutor executor;
+    private ScheduledExecutorService scheduledExecutorService;
+    @Mock
+    private Future<JSExecutionResultDto> scriptTask;
     @InjectMocks
     private JSExecutorService service;
 
     @Test
-    public void execute() throws ScriptException {
+    public void execute() throws ScriptException, ExecutionException, InterruptedException {
         //prepare
         String expectedExecutionResult = "Hello world";
         HttpStatus expectedStatusCode = HttpStatus.OK;
-        when(executor.execute(any())).thenReturn(
+
+        when(scriptTask.get()).thenReturn(
                 JSExecutionResultDto
                         .builder()
-                        .executionResult("Hello world")
+                        .executionResult(expectedExecutionResult)
                         .errors("")
-                        .build());
+                        .build()
+        );
+        when(scheduledExecutorService.submit(any(Callable.class))).thenReturn(scriptTask);
+
         //testing
         JSExecutionResultHttpResponseDto response = service.execute("print(\"Hello world\");");
         //validate
@@ -45,11 +53,18 @@ public class JSExecutorServiceTest {
     }
 
     @Test
-    public void executeWithInnerScriptException() throws ScriptException {
+    public void executeWithInnerScriptException() throws ScriptException, ExecutionException, InterruptedException {
         //prepare
         String expectedExecutionResult = "Error message";
         HttpStatus expectedStatusCode = HttpStatus.BAD_REQUEST;
-        when(executor.execute(any())).thenThrow(new ScriptException("Error message"));
+        when(scriptTask.get()).thenReturn(
+                JSExecutionResultDto
+                        .builder()
+                        .executionResult("")
+                        .errors(expectedExecutionResult)
+                        .build()
+        );
+        when(scheduledExecutorService.submit(any(Callable.class))).thenReturn(scriptTask);
         //testing
         JSExecutionResultHttpResponseDto response = service.execute("throw new Error(\"Error message\");");
         //validate
