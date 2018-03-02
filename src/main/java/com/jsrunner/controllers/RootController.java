@@ -10,4 +10,9 @@ public class RootController {
     public String getMainPage() {
         return "index";
     }
+
+    @RequestMapping("/editor")
+    public String getEditor() {
+        return "editor";
+    }
 }

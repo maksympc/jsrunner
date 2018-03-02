@@ -1,4 +1,17 @@
-.panel-footer.panel-custom {
-    background: #dff0d8;
-    color: black;
+/* Sticky footer styles
+-------------------------------------------------- */
+body {
+    margin-bottom: 40px;
 }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    height: 40px; /* Set the fixed height of the footer here */
+    width: 100%;
+    line-height: 40px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
+/* END Sticky footer styles
+-------------------------------------------------- */
