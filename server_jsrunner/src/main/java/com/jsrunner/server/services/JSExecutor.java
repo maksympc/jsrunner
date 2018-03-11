@@ -37,6 +37,11 @@ public class JSExecutor {
             // step 4. Execute script
             engine.eval(scriptItem.getSourceCode(), context);
             // step 5.0 Change script status to COMPLETED_SUCCESSFULLY
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             scriptItem.setStatus(ScriptExecutionItem.ExecutionStatus.COMPLETED_SUCCESSFULLY);
         } catch (ScriptException e) {
             log.info("An exception has been occurred, while running the script\n" +

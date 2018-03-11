@@ -30,8 +30,8 @@ public class ScriptReceiverControllerIT {
 //                "1) RequestMethod : POST <br>" +
 //                "2) Content-Type : application/javascript";
 //        //testing
-//        ResponseEntity<String> response = restTemplate.exchange("/js", HttpMethod.GET, null, String.class);
-//        String body = response.getBody();
+//        ResponseEntity<String> executionResult = restTemplate.exchange("/js", HttpMethod.GET, null, String.class);
+//        String body = executionResult.getBody();
 //        //validate
 //        assertThat(expected, is(body));
 //    }
@@ -46,9 +46,9 @@ public class ScriptReceiverControllerIT {
 //                .header("Content-Type", "application/javascript")
 //                .body(requestScriptBody);
 //        //testing
-//        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-//        String body = response.getBody();
-//        String statusCode = response.getStatusCode().toString();
+//        ResponseEntity<String> executionResult = restTemplate.exchange(requestEntity, String.class);
+//        String body = executionResult.getBody();
+//        String statusCode = executionResult.getStatusCode().toString();
 //        //validate
 //        assertThat(statusCode, is(expectedStatusCode));
 //        assertThat(body, is(expected));

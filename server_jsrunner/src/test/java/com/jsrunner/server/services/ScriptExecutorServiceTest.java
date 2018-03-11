@@ -39,10 +39,10 @@ public class ScriptExecutorServiceTest {
 //        when(scheduledExecutorService.submit(any(Callable.class))).thenReturn(scriptTask);
 //
 //        //testing
-//        ScriptResponseDto response = service.add("print(\"Hello world\");");
+//        ScriptResponseDto executionResult = service.add("print(\"Hello world\");");
 //        //validate
-//        assertThat(response.getExecutionResult(), is(expectedExecutionResult));
-//        assertThat(response.getHttpStatusCode(), is(expectedStatusCode));
+//        assertThat(executionResult.getExecutionResult(), is(expectedExecutionResult));
+//        assertThat(executionResult.getHttpStatusCode(), is(expectedStatusCode));
 //    }
 //
 //    @Test
@@ -59,9 +59,9 @@ public class ScriptExecutorServiceTest {
 //        );
 //        when(scheduledExecutorService.submit(any(Callable.class))).thenReturn(scriptTask);
 //        //testing
-//        ScriptResponseDto response = service.add("throw new Error(\"Error message\");");
+//        ScriptResponseDto executionResult = service.add("throw new Error(\"Error message\");");
 //        //validate
-//        assertThat(response.getExecutionResult(), is(expectedExecutionResult));
-//        assertThat(response.getHttpStatusCode(), is(expectedStatusCode));
+//        assertThat(executionResult.getExecutionResult(), is(expectedExecutionResult));
+//        assertThat(executionResult.getHttpStatusCode(), is(expectedStatusCode));
 //    }
 }

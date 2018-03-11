@@ -57,12 +57,12 @@
                                     <div class="form-group col-md-12"
                                          style="min-height:120px; resize: vertical; overflow:auto;">
                                     <#--INPUT script form. GET AND SEND parameters from here-->
-                                        <form>
+                                        <form style="height: 100%">
                                             <label for="comment">Input:</label>
                                             <textarea class="form-control" id="scriptInputId1"
-                                                      placeholder="Type your sourceCode here..."
+                                                      placeholder="print('Hello world!');"
                                                       style="resize: none;
-                                                      height: calc(100% - 60px)">print("Hello world!");</textarea>
+                                                      height: calc(100% - 60px);"></textarea>
                                             <button type="button" class="btn btn-default btn-sm"
                                                     style="margin-top: 5px; width:100px"
                                                     onclick="copyInput()">Copy text
@@ -91,7 +91,7 @@
                                                         height: calc(100% - 60px);
                                                         color:white;
                                                         background-color: #637D8B"
-                                                placeholder="Output:">Hello world!</textarea>
+                                                placeholder="Hello world!"></textarea>
                                         <button type="button" class="btn btn-default btn-sm"
                                                 style="margin-top: 5px; width:100px"
                                                 onclick="copyOutput()">Copy text

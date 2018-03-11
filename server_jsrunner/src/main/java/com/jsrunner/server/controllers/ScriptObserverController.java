@@ -33,7 +33,7 @@ public class ScriptObserverController {
             Optional<Boolean> isCanсelled = executorService.cancel(id);
             ResponseEntity response = buildCancelledResponseEntity(isCanсelled, id);
 
-            log.info("Response for id={},response={}", id, response);
+            log.info("Response for id={},executionResult={}", id, response);
             return response;
         } catch (IllegalArgumentException e) {
             return buildIllegalArgumentExceptionResponseEntity(e, uuid);
@@ -49,7 +49,7 @@ public class ScriptObserverController {
             Optional<ScriptExecutionItem> scriptExecutionItem = executorService.get(id);
             ResponseEntity response = buildResponseEntity(scriptExecutionItem, id);
 
-            log.info("Response for id={},response={}", id, response);
+            log.info("Response for id={},executionResult={}", id, response);
             return response;
         } catch (IllegalArgumentException e) {
             return buildIllegalArgumentExceptionResponseEntity(e, uuid);
@@ -75,7 +75,7 @@ public class ScriptObserverController {
     private ResponseEntity buildResponseEntity(Optional<ScriptExecutionItem> scriptExecutionItem, UUID id) {
         Optional<ResponseEntity> response = scriptExecutionItem
                 .map(item -> {
-                    // check status and build response depend of script execution status
+                    // check status and build executionResult depend of script execution status
                     ScriptExecutionItem.ExecutionStatus status = item.getStatus();
                     if (status == ScriptExecutionItem.ExecutionStatus.NEW ||
                             status == ScriptExecutionItem.ExecutionStatus.QUEUED ||

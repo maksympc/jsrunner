@@ -30,8 +30,9 @@ public class Main {
     //@Autowired
     private static JSExecutor executor = new JSExecutor();
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main1(String[] args) throws ExecutionException, InterruptedException {
         //Creating BlockingQueue of size 10
+
         Producer producer1 = new Producer(queueTasks, 300);
         Producer producer2 = new Producer(queueTasks, 300);
         //starting producer to produce messages in queueTasks

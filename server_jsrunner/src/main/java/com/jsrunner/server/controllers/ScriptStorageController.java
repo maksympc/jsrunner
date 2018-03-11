@@ -39,7 +39,7 @@ public class ScriptStorageController {
             Optional<ScriptExecutionItem> scriptExecutionItem = executorService.get(id);
             ResponseEntity response = buildResponseEntity(scriptExecutionItem, id);
 
-            log.info("Response for id={},response={}", id, response);
+            log.info("Response for id={},executionResult={}", id, response);
             return response;
         } catch (IllegalArgumentException e) {
             return buildIllegalArgumentExceptionResponseEntity(e, uuid);
@@ -49,7 +49,7 @@ public class ScriptStorageController {
     private ResponseEntity buildResponseEntity(Optional<ScriptExecutionItem> scriptExecutionItem, UUID id) {
         Optional<ResponseEntity> response = scriptExecutionItem
                 .map(item -> {
-                    // check status and build response depend of script execution status
+                    // check status and build executionResult depend of script execution status
                     ScriptExecutionItem.ExecutionStatus status = item.getStatus();
                     return ResponseEntity
                             .status(HttpStatus.OK)
