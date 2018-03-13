@@ -1,6 +1,6 @@
 package com.jsrunner.server.services;
 
-import com.jsrunner.server.model.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionItem;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,11 +37,12 @@ public class JSExecutor {
             // step 4. Execute script
             engine.eval(scriptItem.getSourceCode(), context);
             // step 5.0 Change script status to COMPLETED_SUCCESSFULLY
-            try {
-                Thread.sleep(30000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//TODO:пересмотреть тело выполнения скрипта
+//            try {
+//                Thread.sleep(30000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             scriptItem.setStatus(ScriptExecutionItem.ExecutionStatus.COMPLETED_SUCCESSFULLY);
         } catch (ScriptException e) {
             log.info("An exception has been occurred, while running the script\n" +

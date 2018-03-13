@@ -1,4 +1,4 @@
-package com.jsrunner.server.model;
+package com.jsrunner.server.models;
 
 public enum ScriptRequestMode {
     SYNC, ASYNC;

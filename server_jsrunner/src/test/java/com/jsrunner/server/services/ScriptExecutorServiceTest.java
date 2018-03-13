@@ -1,6 +1,6 @@
 package com.jsrunner.server.services;
 
-import com.jsrunner.server.model.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionItem;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

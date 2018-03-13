@@ -1,4 +1,4 @@
-package com.jsrunner.server.model;
+package com.jsrunner.server.models;
 
 
 import lombok.AllArgsConstructor;
@@ -16,9 +16,8 @@ import java.util.UUID;
 public class ScriptExecutionItemResponseDto {
     private UUID id;
     private ScriptExecutionItem.ExecutionStatus status;
-    private String source;
-    private String executionOutput;
-    private Link cancelLink;
+    private String output;
+    private Link cancelExecutionLink;
 
     @Data
     @AllArgsConstructor

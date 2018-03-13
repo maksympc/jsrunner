@@ -1,13 +1,10 @@
 package com.jsrunner.server.controllers;
 
-import com.jsrunner.server.model.ScriptExecutionItem;
-import com.jsrunner.server.model.ScriptExecutionItemResponseDto;
-import com.jsrunner.server.model.ScriptResponseDto;
+import com.jsrunner.server.models.ScriptExecutionItem;
 import com.jsrunner.server.services.ScriptExecutorService;
+import com.jsrunner.server.services.ScriptUtilsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +20,8 @@ public class ScriptObserverController {
 
     @Autowired
     private ScriptExecutorService executorService;
+    @Autowired
+    private ScriptUtilsService utils;
 
     @DeleteMapping(value = "/queue/{uuid}")
     public ResponseEntity cancel(@PathVariable String uuid) {
@@ -31,12 +30,12 @@ public class ScriptObserverController {
             log.info("Request with id={}", id);
 
             Optional<Boolean> isCanсelled = executorService.cancel(id);
-            ResponseEntity response = buildCancelledResponseEntity(isCanсelled, id);
+            ResponseEntity response = utils.buildCancelledResponse(isCanсelled, id);
 
             log.info("Response for id={},executionResult={}", id, response);
             return response;
         } catch (IllegalArgumentException e) {
-            return buildIllegalArgumentExceptionResponseEntity(e, uuid);
+            return utils.buildIllegalArgumentResponse(e, uuid);
         }
     }
 
@@ -47,73 +46,14 @@ public class ScriptObserverController {
             log.info("Request with id={}", id);
 
             Optional<ScriptExecutionItem> scriptExecutionItem = executorService.get(id);
-            ResponseEntity response = buildResponseEntity(scriptExecutionItem, id);
+            ResponseEntity response = utils.buildResponseEntity(scriptExecutionItem, id);
 
             log.info("Response for id={},executionResult={}", id, response);
             return response;
         } catch (IllegalArgumentException e) {
-            return buildIllegalArgumentExceptionResponseEntity(e, uuid);
+            //TODO: передавать относительный путь, как строку
+            return utils.buildIllegalArgumentResponse(e, uuid);
         }
     }
 
-    private ResponseEntity buildCancelledResponseEntity(Optional<Boolean> isCancelled, UUID id) {
-        return isCancelled
-                .map((cancelled) -> {
-                    if (cancelled) {
-                        return ResponseEntity
-                                .status(HttpStatus.OK)
-                                .body("Script with id={" + id + "} has been cancelled!");
-                    } else {
-                        return ResponseEntity
-                                .status(HttpStatus.NO_CONTENT)
-                                .body("Script with id={" + id + "} cannot be cancelled!");
-                    }
-                })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element, with id:{" + id + "} not found!"));
-    }
-
-    private ResponseEntity buildResponseEntity(Optional<ScriptExecutionItem> scriptExecutionItem, UUID id) {
-        Optional<ResponseEntity> response = scriptExecutionItem
-                .map(item -> {
-                    // check status and build executionResult depend of script execution status
-                    ScriptExecutionItem.ExecutionStatus status = item.getStatus();
-                    if (status == ScriptExecutionItem.ExecutionStatus.NEW ||
-                            status == ScriptExecutionItem.ExecutionStatus.QUEUED ||
-                            status == ScriptExecutionItem.ExecutionStatus.RUNNING) {
-                        return ResponseEntity
-                                .status(HttpStatus.OK)
-                                .body(ScriptExecutionItemResponseDto
-                                        .builder()
-                                        .id(item.getId())
-                                        .source(item.getSourceCode())
-                                        .status(status)
-                                        .executionOutput(item.getWriter().toString() + item.getErrorWriter().toString())
-                                        .cancelLink(ScriptExecutionItemResponseDto.Link.builder()
-                                                .href("/queue/" + id)
-                                                .method(HttpMethod.DELETE)
-                                                .build())
-                                        .build()
-                                );
-                    } else {
-                        return ResponseEntity
-                                .status(HttpStatus.SEE_OTHER)
-                                .body(ScriptResponseDto
-                                        .builder()
-                                        .id(id)
-                                        .location("/storage/" + id)
-                                        .build());
-                    }
-                });
-
-        return response.orElseGet(
-                () -> ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body("Element, with id:{" + id + "} not found!"));
-    }
-
-    private ResponseEntity buildIllegalArgumentExceptionResponseEntity(IllegalArgumentException e, String uuid) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Error in link formation. The .../queue/{" + uuid + "} element must have UUID formatting. " + e.getMessage());
-    }
 }

@@ -1,8 +1,8 @@
 package com.jsrunner.server.controllers;
 
 
-import com.jsrunner.server.model.ScriptRequestDto;
-import com.jsrunner.server.model.ScriptRequestMode;
+import com.jsrunner.server.models.ScriptRequestDto;
+import com.jsrunner.server.models.ScriptRequestMode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

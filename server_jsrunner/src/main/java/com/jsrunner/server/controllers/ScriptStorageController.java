@@ -1,18 +1,16 @@
 package com.jsrunner.server.controllers;
 
 
-import com.jsrunner.server.model.ScriptExecutionItem;
-import com.jsrunner.server.model.ScriptExecutionItemResponseDto;
-import com.jsrunner.server.model.ScriptResponseDto;
+import com.jsrunner.server.models.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionItemResponseDto;
 import com.jsrunner.server.services.ScriptExecutorService;
+import com.jsrunner.server.services.ScriptUtilsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
@@ -22,15 +20,18 @@ import java.util.UUID;
 /**
  * This controller providing access to already executed or terminated scripts
  */
-@RequestMapping("/storage")
+// TODO: перенести логику в сервисы, в контроллерах оставить только вызовы методов и перенаправки процессинга
 @RestController
 @Slf4j
 public class ScriptStorageController {
 
     @Autowired
-    ScriptExecutorService executorService;
+    private ScriptExecutorService executorService;
+    @Autowired
+    private ScriptUtilsService utils;
 
-    @GetMapping("/{uuid}")
+
+    @GetMapping("/storage/{uuid}")
     public ResponseEntity get(@PathVariable String uuid) {
         try {
             UUID id = UUID.fromString(uuid);
@@ -42,7 +43,7 @@ public class ScriptStorageController {
             log.info("Response for id={},executionResult={}", id, response);
             return response;
         } catch (IllegalArgumentException e) {
-            return buildIllegalArgumentExceptionResponseEntity(e, uuid);
+            return utils.buildIllegalArgumentResponse(e, uuid);
         }
     }
 
@@ -56,9 +57,8 @@ public class ScriptStorageController {
                             .body(ScriptExecutionItemResponseDto
                                     .builder()
                                     .id(item.getId())
-                                    .source(item.getSourceCode())
                                     .status(status)
-                                    .executionOutput(item.getWriter().toString() + item.getErrorWriter().toString())
+                                    .output(item.getWriter().toString() + item.getErrorWriter().toString())
                                     .build()
                             );
                 });
@@ -67,9 +67,5 @@ public class ScriptStorageController {
                 () -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("Element, with id:{" + id + "} not found!"));
-    }
-
-    private ResponseEntity buildIllegalArgumentExceptionResponseEntity(IllegalArgumentException e, String uuid) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error in link formation. The .../queue/{" + uuid + "} element must have UUID formatting. " + e.getMessage());
     }
 }

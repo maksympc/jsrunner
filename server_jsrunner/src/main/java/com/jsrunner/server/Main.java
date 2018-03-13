@@ -1,7 +1,7 @@
 package com.jsrunner.server;
 
 
-import com.jsrunner.server.model.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionItem;
 import com.jsrunner.server.services.JSExecutor;
 import lombok.AllArgsConstructor;
 import lombok.Data;

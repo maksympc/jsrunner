@@ -1,6 +1,6 @@
 package com.jsrunner.server.repository;
 
-import com.jsrunner.server.model.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionItem;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,9 +16,6 @@ public class MemoryStorage {
     private static final int INITIAL_QUEUE_CAPACITY = 100;
     private final BlockingQueue<ScriptExecutionItem> executionQueue;
     private final ConcurrentSkipListMap<UUID, ScriptExecutionItem> executionResultMap;
-
-    //    private static final int TIMEOUT_TO_ADD = 1;
-//    private static final TimeUnit TIMEUNIT_TO_ADD = TimeUnit.SECONDS;
 
     //TODO: пересмотреть необходимость блокировки на запись и чтение
     private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();

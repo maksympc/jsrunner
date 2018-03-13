@@ -1,8 +1,8 @@
 package com.jsrunner.server.services;
 
-import com.jsrunner.server.model.ScriptExecutionItem;
-import com.jsrunner.server.model.ScriptRequestDto;
-import com.jsrunner.server.model.ScriptResponseDto;
+import com.jsrunner.server.models.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptRequestDto;
+import com.jsrunner.server.models.ScriptResponseDto;
 import com.jsrunner.server.repository.MemoryStorage;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;

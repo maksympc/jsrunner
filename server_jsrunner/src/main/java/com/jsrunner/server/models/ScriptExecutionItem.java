@@ -1,4 +1,4 @@
-package com.jsrunner.server.model;
+package com.jsrunner.server.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,5 @@
 package com.jsrunner.client;
 
-
-import com.jsrunner.client.controllers.ScriptDispatcherController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.jsrunner.client")
 public class Application {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class);
     }
 }
