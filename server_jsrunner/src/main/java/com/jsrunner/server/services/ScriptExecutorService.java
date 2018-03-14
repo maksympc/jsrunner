@@ -1,6 +1,7 @@
 package com.jsrunner.server.services;
 
 import com.jsrunner.server.models.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionStatus;
 import com.jsrunner.server.models.ScriptRequestDto;
 import com.jsrunner.server.models.ScriptResponseDto;
 import com.jsrunner.server.repository.MemoryStorage;
@@ -50,7 +51,7 @@ public class ScriptExecutorService {
         if (!dbScriptItem.isPresent()) {
             return Optional.empty();
         }
-        dbScriptItem.get().setStatus(ScriptExecutionItem.ExecutionStatus.CANCELLED);
+        dbScriptItem.get().setStatus(ScriptExecutionStatus.CANCELLED);
         // Cancelling already executing sourceCode item status
         Optional<Future> futureExecutionItem = Optional.of(futureScriptExecutionResultMap.get(id));
         return futureExecutionItem.map((item) -> item.cancel(true));
@@ -102,7 +103,7 @@ public class ScriptExecutorService {
                     Future executionResult = pool.submit(() -> scriptExecutor.execute(item));
                     pool.schedule(() -> {
                                 if (executionResult.cancel(true)) {
-                                    item.setStatus(ScriptExecutionItem.ExecutionStatus.INTERRUPTED);
+                                    item.setStatus(ScriptExecutionStatus.INTERRUPTED);
                                 }
                             },
                             TIME_TO_INTERRUPT,

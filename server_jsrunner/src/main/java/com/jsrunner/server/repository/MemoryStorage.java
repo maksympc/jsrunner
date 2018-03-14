@@ -1,6 +1,7 @@
 package com.jsrunner.server.repository;
 
 import com.jsrunner.server.models.ScriptExecutionItem;
+import com.jsrunner.server.models.ScriptExecutionStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Repository
 public class MemoryStorage {
-    private static final int INITIAL_QUEUE_CAPACITY = 100;
+    private static final int INITIAL_QUEUE_CAPACITY = 10000;
     private final BlockingQueue<ScriptExecutionItem> executionQueue;
     private final ConcurrentSkipListMap<UUID, ScriptExecutionItem> executionResultMap;
 
@@ -27,16 +28,17 @@ public class MemoryStorage {
         executionResultMap = new ConcurrentSkipListMap<>();
     }
 
+    // TODO: пересмотреть случай, когда возвращается null!
     public Optional<UUID> add(String script) {
         w.lock();
         try {
             UUID id = UUID.randomUUID();
-            ScriptExecutionItem scriptContainer = new ScriptExecutionItem(script, id, ScriptExecutionItem.ExecutionStatus.NEW);
+            ScriptExecutionItem scriptContainer = new ScriptExecutionItem(script, id, ScriptExecutionStatus.NEW);
             executionResultMap.put(id, scriptContainer);
             if (executionQueue.offer(scriptContainer)) {
-                scriptContainer.setStatus(ScriptExecutionItem.ExecutionStatus.QUEUED);
+                scriptContainer.setStatus(ScriptExecutionStatus.QUEUED);
             } else {
-                scriptContainer.setStatus(ScriptExecutionItem.ExecutionStatus.REJECTED);
+                scriptContainer.setStatus(ScriptExecutionStatus.REJECTED);
                 return Optional.ofNullable(null);
             }
             return Optional.of(id);

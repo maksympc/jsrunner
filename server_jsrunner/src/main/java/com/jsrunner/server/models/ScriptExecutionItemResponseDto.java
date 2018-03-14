@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ScriptExecutionItemResponseDto {
     private UUID id;
-    private ScriptExecutionItem.ExecutionStatus status;
+    private ScriptExecutionStatus status;
     private String output;
     private Link cancelExecutionLink;
 

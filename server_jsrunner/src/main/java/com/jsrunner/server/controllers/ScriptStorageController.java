@@ -3,6 +3,7 @@ package com.jsrunner.server.controllers;
 
 import com.jsrunner.server.models.ScriptExecutionItem;
 import com.jsrunner.server.models.ScriptExecutionItemResponseDto;
+import com.jsrunner.server.models.ScriptExecutionStatus;
 import com.jsrunner.server.services.ScriptExecutorService;
 import com.jsrunner.server.services.ScriptUtilsService;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,7 @@ public class ScriptStorageController {
         Optional<ResponseEntity> response = scriptExecutionItem
                 .map(item -> {
                     // check status and build executionResult depend of script execution status
-                    ScriptExecutionItem.ExecutionStatus status = item.getStatus();
+                    ScriptExecutionStatus status = item.getStatus();
                     return ResponseEntity
                             .status(HttpStatus.OK)
                             .body(ScriptExecutionItemResponseDto

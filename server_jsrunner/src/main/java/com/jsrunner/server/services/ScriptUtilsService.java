@@ -3,6 +3,7 @@ package com.jsrunner.server.services;
 
 import com.jsrunner.server.models.ScriptExecutionItem;
 import com.jsrunner.server.models.ScriptExecutionItemResponseDto;
+import com.jsrunner.server.models.ScriptExecutionStatus;
 import com.jsrunner.server.models.ScriptResponseDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -54,10 +55,10 @@ public class ScriptUtilsService {
         Optional<ResponseEntity> response = scriptExecutionItem
                 .map(item -> {
                     // check status and build executionResult depend of script execution status
-                    ScriptExecutionItem.ExecutionStatus status = item.getStatus();
-                    if (status == ScriptExecutionItem.ExecutionStatus.NEW ||
-                            status == ScriptExecutionItem.ExecutionStatus.QUEUED ||
-                            status == ScriptExecutionItem.ExecutionStatus.RUNNING) {
+                    ScriptExecutionStatus status = item.getStatus();
+                    if (status == ScriptExecutionStatus.NEW ||
+                            status == ScriptExecutionStatus.QUEUED ||
+                            status == ScriptExecutionStatus.RUNNING) {
                         return ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(ScriptExecutionItemResponseDto

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html ng-app="jsRunnerApp">
+<html ng-app="jsRunnerApp1">
 <head>
-
     <meta charset="utf-8">
     <title>Test page</title>
     <link rel="stylesheet" href="css/lib/bootstrap.min.css">
@@ -10,7 +9,6 @@
 </head>
 <body>
 <body ng-controller="LoadController">
-
 <div align="center">
     <br/>
     <textarea
@@ -32,7 +30,6 @@
     <button class="btn btn-success" ng-click="start()" style="margin-right: 10px">Start</button>
     <button class="btn btn-danger" ng-click="stop()" style="margin-right: 10px">Stop</button>
 </div>
-
 <script src="js/app.js"></script>
 </body>
 </html>

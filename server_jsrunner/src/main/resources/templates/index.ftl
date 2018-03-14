@@ -18,88 +18,61 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">User guide:</h3>
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" href="#userGuideID">User guide:</a>
+                </h3>
             </div>
-            <div class="panel-body">
-                <p>To execute the JavaScript code, create and send to the address {root}/js a request with the following
-                    content:</p>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <td>
-                                #
-                            </td>
-                            <td>
-                                Parameter
-                            </td>
-                            <td>
-                                Value
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                HTTP Method
-                            </td>
-                            <td>
-                                POST
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                h:Content-Type
-                            </td>
-                            <td>
-                                application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                3
-                            </td>
-                            <td>
-                                b:mode
-                            </td>
-                            <td>
-                                SYNC/ASYNC
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                4
-                            </td>
-                            <td>
-                                b:sourceSource
-                            </td>
-                            <td>
-                                script source code...
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                *h - header element, b - body element
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#exampleID">Example:</a>
-                            </h4>
-                        </div>
-                        <div id="exampleID" class="panel-collapse collapse">
-                            <div class="panel-body">
+            <div id="userGuideID" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>To execute the JavaScript code, create and send to the address http://localhost:8090/js a request
+                        with the
+                        following
+                        content:</p>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Parameter</td>
+                                <td>Value</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>HTTP Method</td>
+                                <td>POST</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>h:Content-Type</td>
+                                <td>application/json</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>b:mode</td>
+                                <td>SYNC/ASYNC</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>b:sourceCode</td>
+                                <td>script source code...</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">*h - header, b - body elements</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#exampleID">Example:</a>
+                                </h4>
+                            </div>
+                            <div id="exampleID" class="panel-collapse collapse">
+                                <div class="panel-body">
 <pre>
         POST http://localhost:8090/js HTTP/1.1
         Content-Type: application/json
@@ -109,19 +82,20 @@
             "sourceCode":"print('Hello world');"
         }
 </pre>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
+
 <div class="footer">
     <div class="container text-center">
-        <p class="text-muted"><a target="_blank" href="https://github.com/maksympc/jsrunner"> © 2018 JS Runner.</a> All
+        <p class="text-muted"><a target="_blank" href="https://github.com/maksympc/jsrunner"> © 2018 JS Runner.</a>
+            All
             rights reserved.</p>
     </div>
 </div>

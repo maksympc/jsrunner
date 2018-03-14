@@ -1,4 +1,4 @@
-let app = angular.module("jsRunnerApp", ['luegg.directives']);
+let app = angular.module("jsRunnerApp1", ['luegg.directives']);
 
 app.factory("dataService",
     function ($http, $q) {
