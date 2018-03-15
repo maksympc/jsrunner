@@ -18,6 +18,8 @@ public class JsRunnerApiClient {
 
     RestTemplate template = new RestTemplate();
 
+    // опрос, пока статус не станет терминальным
+
     public String send(@NonNull String script) {
 
         ScriptRequestDto request = ScriptRequestDto

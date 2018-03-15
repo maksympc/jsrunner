@@ -3,6 +3,7 @@ package com.jsrunner.client.repository;
 import com.jsrunner.client.models.ScriptExecutionItem;
 import com.jsrunner.client.models.ScriptExecutionItemResponseDto;
 import com.jsrunner.client.models.ScriptExecutionStatus;
+import com.jsrunner.client.models.ScriptRequestDto;
 import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,7 @@ public class MemoryStorage {
         requestsQueue = new LinkedBlockingQueue<>(INITIAL_QUEUE_CAPACITY);
     }
 
-    public UUID add(@NonNull String script) {
+    public UUID add(@NonNull ScriptRequestDto script) {
         UUID id = UUID.randomUUID();
         ScriptExecutionItem request = new ScriptExecutionItem(id, script);
         ScriptExecutionItemResponseDto response = ScriptExecutionItemResponseDto
@@ -53,5 +54,9 @@ public class MemoryStorage {
         }
         executionResultsMap.put(id, item);
         return true;
+    }
+
+    public BlockingQueue<ScriptExecutionItem> getRequestsQueue() {
+        return requestsQueue;
     }
 }

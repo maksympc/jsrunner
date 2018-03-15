@@ -39,11 +39,11 @@ public class JSExecutor {
             engine.eval(scriptItem.getSourceCode(), context);
             // step 5.0 Change script status to COMPLETED_SUCCESSFULLY
 //TODO:пересмотреть тело выполнения скрипта
-//            try {
-//                Thread.sleep(30000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             scriptItem.setStatus(ScriptExecutionStatus.COMPLETED_SUCCESSFULLY);
         } catch (ScriptException e) {
             log.info("An exception has been occurred, while running the script\n" +

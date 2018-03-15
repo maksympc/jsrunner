@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 
-//TODO:переделать способ отправки
+//TODO: переделать способ отправки,
+//TODO: создать пулл из 4 потов для обработки очереди запросов
 @Service
 public class AsyncJsRunnerService {
 
@@ -19,11 +20,10 @@ public class AsyncJsRunnerService {
     private AsyncJsRunnerClientApi api;
 
     /**
-     * add script to execution request queue
+     * Add script to execution request queue
      */
     public ScriptExecutionItemResponseDto add(ScriptRequestDto script) {
-        UUID id = db.add(script.getSourceCode());
-        api.sendScript(script);
+        UUID id = db.add(script);
         return db.get(id).get();
     }
 

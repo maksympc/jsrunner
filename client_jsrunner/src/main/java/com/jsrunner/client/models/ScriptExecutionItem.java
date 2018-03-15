@@ -1,7 +1,6 @@
 package com.jsrunner.client.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
@@ -14,5 +13,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ScriptExecutionItem {
     private UUID id;
-    private String script;
+    private ScriptRequestDto script;
 }

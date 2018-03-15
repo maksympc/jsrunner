@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @Slf4j
-public class ScriptObserverController {
+public class ScriptQueueController {
 
     @Autowired
     private ScriptExecutorService executorService;

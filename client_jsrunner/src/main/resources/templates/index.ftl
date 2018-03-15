@@ -30,8 +30,8 @@
                                 <option>Blocking</option>
                                 <option>Non-blocking</option>
                             </select>
-                            <button type="button" class="btn btn-success" disabled
-                                    style="width:90px;" title="Sorry, not implemented!">Add new +
+                            <button type="button" disabled class="btn btn-success"
+                                   style="width:90px;" title="Sorry, not implemented!">Add new +
                             </button>
                         </div>
                     </div>
