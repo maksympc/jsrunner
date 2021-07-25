@@ -1,5 +1,5 @@
 # JSRunner
-<p>App is under development.
+
 <p><b>JSRunner Server:</b>
 <br/>It is a REST API wrapper around javax.script.ScriptEngine, that provides capabilities via API:
 <br/>1) Run the JavaScript code in the body of the request in Nashorn (java 8) and return the output of the script (or error message) to the console in the response body.
